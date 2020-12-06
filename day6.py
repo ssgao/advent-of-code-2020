@@ -1,14 +1,14 @@
 import functools
-from typing import Callable
+from typing import Callable, List, Set
 
-data = []
+data: List[str] = []
 with open('day6input') as f:
     data = [l.strip() for l in f.readlines()]
 
 
-def get_answers(func: Callable[[set], set]):
-    answers = []
-    a = []
+def get_answers(func: Callable[[Set[str], Set[str]], Set[str]]):
+    answers: List[Set[str]] = []
+    a: List[Set[str]] = []
     for l in data:
         if len(l) == 0:
             answers.append(functools.reduce(func, a))
