@@ -1,29 +1,31 @@
-data = []
-with open('day1input') as f:
-  data = [int(i) for i in f.readlines()]
+from typing import Dict, List, Set, Tuple
+
+data: List[int] = []
+with open('day1input') as b:
+  data = [int(i) for i in b.readlines()]
 
 # Part 1
-knownNumbers = set()
-for d in data:
-  if 2020-d in knownNumbers:
-    print(d * (2020-d))
+knownNumbers: Set[int] = set()
+for a in data:
+  if 2020-a in knownNumbers:
+    print(a * (2020-a))
     break
   else:
-    knownNumbers.add(d)
+    knownNumbers.add(a)
 
 # Part 2
-numMap = {}
-for d in data:
-  if d >= 2019:
+numMap: Dict[int, Tuple[int, int]] = {}
+for a in data:
+  if a >= 2019:
     continue
-  max = 2019-d
-  for f in data:
-    if f >= max-1:
+  max = 2019-a
+  for b in data:
+    if b >= max-1:
       continue
-    numMap[2020-d-f] = (d, f)
+    numMap[2020-a-b] = (a, b)
 
-for d in data:
-  if d in numMap:
-    f, g = numMap[d]
-    print(d * f * g)
+for a in data:
+  if a in numMap:
+    b, g = numMap[a]
+    print(a * b * g)
     break

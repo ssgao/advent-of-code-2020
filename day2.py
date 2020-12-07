@@ -1,8 +1,10 @@
-data = []
+from typing import List
+
+data: List[List[str]] = []
 with open('day2input') as f:
   data = [x.split(' ') for x in f.readlines()]
 
-def isValidPart1(line: str) -> bool:
+def isValidPart1(line: List[str]) -> bool:
   min, max = [int(x) for x in line[0].split('-')]
   c = line[1].strip(':')
   counter = 0
@@ -15,7 +17,7 @@ def isValidPart1(line: str) -> bool:
 
 print(sum(isValidPart1(x) for x in data))
 
-def isValidPart2(line: str) -> bool:
+def isValidPart2(line: List[str]) -> bool:
   pos1, pos2 = [int(x)-1 for x in line[0].split('-')]
   c = line[1].strip(':')
   return (pos1 < len(line[2]) and line[2][pos1] == c) != (pos2 < len(line[2]) and line[2][pos2] == c)

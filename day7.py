@@ -1,5 +1,8 @@
-import functools
-from typing import Callable, Dict, List, Set
+from typing import Dict, Set
+
+data = []
+with open('day7input') as f:
+  data = [s.strip('.\n').replace(' bags', '').replace(' bag', '') for s in f.readlines()]
 
 class Bag:
   def __init__(self):
@@ -7,10 +10,6 @@ class Bag:
     self.containedBy: Set[str] = set()
 
 bags: Dict[str, Bag] = {}
-
-data = []
-with open('day7input') as f:
-  data = [s.strip('.\n').replace(' bags', '').replace(' bag', '') for s in f.readlines()]
 
 def build_graph():
   for d in data:
@@ -28,16 +27,11 @@ def build_graph():
 build_graph()
 
 def print_graph():
-  for k, v in bags.items():
-    print(f'{k}: {v.contains} & {v.containedBy}')
+  print(*(f'{k}: {v.contains} & {v.containedBy}\n' for k, v in bags.items()))
 
 def find_contained_by(name: str, visited: Set[str]) -> int:
-  count = 0
-  for bag in bags[name].containedBy:
-    if bag not in visited:
-      visited.add(bag)
-      count += 1 + find_contained_by(bag, visited)
-  return count
+  visited.add(name)
+  return sum(1 + find_contained_by(bag, visited) if bag not in visited else 0 for bag in bags[name].containedBy)
 
 print(find_contained_by('shiny gold', set())) # part 1
 

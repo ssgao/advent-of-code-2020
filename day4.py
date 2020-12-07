@@ -1,8 +1,8 @@
 import re
-from typing import Dict
+from typing import Dict, List
 
 hclRegex = re.compile('#[0-9a-f]{6}')
-passports = []
+passports: List[Dict[str, str]] = []
 rules = {'byr': lambda x: int(x) >= 1920 and int(x) <= 2002,
          'iyr': lambda x: int(x) >= 2010 and int(x) <= 2020,
          'eyr': lambda x: int(x) >= 2020 and int(x) <= 2030,
@@ -19,11 +19,11 @@ with open('day4input') as f:
       passports.append(current)
       current = {}
     else:
-      current = current | dict(s.split(':') for s in line.strip().split(' '))
+      current = current | dict(s.split(':') for s in line.strip().split(' ')) #type: ignore
   if len(current) > 0:
     passports.append(current)
 
-def check(p: dict) -> bool:
+def check(p: Dict[str, str]) -> bool:
   return set(rules.keys()).issubset(p.keys()) and all(key == 'cid' or rules[key](value) for key, value in p.items())
 
 print(sum(check(p) for p in passports))
