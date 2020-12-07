@@ -1,4 +1,5 @@
 import re
+from typing import Dict
 
 hclRegex = re.compile('#[0-9a-f]{6}')
 passports = []
@@ -12,7 +13,7 @@ rules = {'byr': lambda x: int(x) >= 1920 and int(x) <= 2002,
          'pid': lambda x: x.isdigit() and len(x) == 9}
 
 with open('day4input') as f:
-  current = {}
+  current: Dict[str, str] = {}
   for line in f.readlines():
     if len(line.strip()) == 0:
       passports.append(current)
