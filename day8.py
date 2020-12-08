@@ -18,17 +18,14 @@ def execute(instructions: List[Tuple[str, int]], fix_mode: bool) -> int:
     current += 1
   return accumulator
 
-def swap(instructions: List[Tuple[str, int]], line: int) -> List[Tuple[str, int]]:
-  copy = [x[:] for x in data] # deep copy
-  copy[line] = ('nop' if copy[line][0] == 'jmp' else 'jmp', copy[line][1])
-  return copy
-
 def fix_program(instructions: List[Tuple[str, int]]) -> int:
   for i in range(len(instructions)):
     if instructions[i][0] == 'jmp' or instructions[i][0] == 'nop':
-      copy = swap(instructions, i)
-      if (result := execute(copy, True)) > -1:
+      old = instructions[i]
+      instructions[i] = ('nop' if instructions[i][0] == 'jmp' else 'jmp', instructions[i][1])
+      if (result := execute(instructions, True)) > -1:
         return result
+      instructions[i] = old
   return result
 
 if __name__ == "__main__":
