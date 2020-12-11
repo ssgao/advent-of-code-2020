@@ -1,6 +1,4 @@
-import functools
-import re
-from typing import Callable, Dict, List, Set, Tuple
+from typing import List
 
 def find_weakness(data: List[int]) -> int:
   begin, end = 0, 25
