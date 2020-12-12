@@ -1,6 +1,4 @@
 from itertools import product
-import math
-from operator import add, mul
 from typing import List
 
 def print_processed(data: List[str]):
@@ -22,7 +20,7 @@ def process(data: List[str], occupiedlimit: int, first: bool) -> List[str]:
     for j in range(len(data[0])):
       if data[i][j] == '.':
         continue
-      occupiedcount = sum(is_occupied(data, i, j, idir, jdir, first) for idir, jdir in product([-1, 0, 1], [-1, 0, 1]) if idir != 0 or jdir != 0)
+      occupiedcount = sum(is_occupied(data, i, j, idir, jdir, first) for idir, jdir in product([-1, 0, 1], repeat=2) if idir != 0 or jdir != 0)
       if occupiedcount == 0 and data[i][j] == 'L':
         tmp[j] = '#'
       elif data[i][j] == '#' and occupiedcount >= occupiedlimit:
@@ -39,8 +37,8 @@ def stablize(data: List[str], occupiedlimit: int, first: bool) -> int:
   return sum(s.count('#') for s in data)
 
 if __name__ == "__main__":
-    data = []
-    with open('day11input') as f:
-        data = [s.strip('\n') for s in f.readlines()]
-    print(stablize(data, 4, True))
-    print(stablize(data, 5, False))
+  data = []
+  with open('day11input') as f:
+      data = [s.strip('\n') for s in f.readlines()]
+  print(stablize(data, 4, True))
+  print(stablize(data, 5, False))
