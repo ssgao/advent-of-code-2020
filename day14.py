@@ -14,17 +14,13 @@ def mask_it(mask: str, value: str) -> int:
   return int(''.join([v if m == 'X' else m for m, v in zip(mask, value)]), base=2)
 
 def pad(value: str) -> str:
-  value_r = value[::-1]
-  zeros = '0' * (36 - len(value_r))
-  return ''.join((value_r + zeros)[::-1])
+  return ''.join((value[::-1] + '0' * (36 - len(value)))[::-1])
 
 def process(program: List[Program]) -> int:
   result: Dict[int, int] = {}
   for p in program:
     for m in p.mems:
       result[m[0]] = mask_it(p.mask, pad(bin(m[1])[2:]))
-  #     print(f'{m[0]}: {result[m[0]]}')
-  # print(result.values())
   return sum(result.values())
 
 def apply_mask(template: List[str], indicies: List[int], values: List[int]) -> List[int]:
