@@ -1,4 +1,4 @@
-from itertools import permutations
+from itertools import groupby, permutations
 import math
 import re
 from typing import Dict, List, Set, Tuple
@@ -17,20 +17,10 @@ class Rule:
       if all(self.match(t[col]) for t in tickets):
         self.col.append(col)
 
-def parse(data: List[str]) -> Tuple[List[Rule], List[int], List[List[int]]]:
-  i = 0
-  rules: List[Rule] = []
-  mine: List[int] = []
-  nearby: List[List[int]] = []
-  while len(data[i]) > 0:
-    rules.append(Rule(re.findall(r"([^:]+): (\d+)-(\d+) or (\d+)-(\d+)", data[i])))
-    i += 1
-  i += 2
-  mine = [int(x) for x in data[i].split(',')]
-  i += 3
-  while i < len(data):
-    nearby.append([int(x) for x in data[i].split(',')])
-    i += 1
+def parse(data: List[List[str]]) -> Tuple[List[Rule], List[int], List[List[int]]]:
+  rules: List[Rule] = [Rule(re.findall(r"([^:]+): (\d+)-(\d+) or (\d+)-(\d+)", d)) for d in data[0]]
+  mine: List[int] = [int(x) for x in data[1][1].split(',')]
+  nearby: List[List[int]] = [[int(x) for x in d.split(',')] for d in data[2]]
   return (rules, mine, nearby)
 
 def process(nearby: List[List[int]], rules: List[Rule]) -> Tuple[int, List[List[int]]]:
@@ -61,7 +51,7 @@ def compute(rules: List[Rule], mine: List[int]) -> int:
 
 if __name__ == "__main__":
   with open('day16input') as f:
-    data = [s.strip('\n') for s in f.readlines()]
+    data = [list(y) for x, y in groupby([s.strip('\n') for s in f.readlines()], lambda z: len(z) == 0) if not x]
   rules, mine, nearby = parse(data)
   errorrate, filtered = process(nearby, rules)
   print(errorrate) # part 1
