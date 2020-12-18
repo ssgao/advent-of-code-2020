@@ -1,10 +1,6 @@
 import copy
-from functools import reduce
-from itertools import groupby, permutations, product
-import math
-from operator import add, mul
-import re
-from typing import Callable, Dict, List, Set, Tuple
+from itertools import product
+from typing import List
 
 def process(pocket: List[List[List[List[bool]]]]) -> List[List[List[List[bool]]]]:
   new_pocket: List[List[List[List[bool]]]] = copy.deepcopy(pocket)
